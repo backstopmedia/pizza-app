@@ -1,0 +1,21 @@
+.pizza-preview {
+  float: right;
+  width: 200px;
+  font-size: 0.7em;
+  background: #efefef;
+  padding: 15px;
+  text-align: left;
+
+  h2 {
+    margin-top: 0.5em;
+    margin-bottom: 0;
+    text-transform: uppercase;
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  p {
+    margin: 0;
+  }
+}

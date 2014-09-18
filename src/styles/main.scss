@@ -1,0 +1,16 @@
+@import "_reset";
+@import "variables";
+@import "typography";
+@import "layout";
+@import "pizza-preview";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  padding: 5em 0;
+  font-size: $text-size-base;
+  color: $color-primary;
+  text-align: center;
+}

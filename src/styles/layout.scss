@@ -1,0 +1,29 @@
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+.wrapper {
+  margin: 0 auto;
+  width: 600px;
+  text-align: left;
+  border: 3px solid #efefef;
+  padding: 2.5em;
+}
+
+#main {
+  @include clearfix;
+}
+
+label {
+  display: block;
+  margin-top: 0.3em;
+}
+
+.pizza-configuration {
+  float: left;
+  width: 250px;
+}
