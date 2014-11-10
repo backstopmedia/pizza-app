@@ -11,6 +11,7 @@ var minimist = require('minimist');
 var minifyCss = require('gulp-minify-css');
 var buffer = require('gulp-buffer');
 var uglify = require('gulp-uglify');
+var imagemin = require('gulp-imagemin');
 
 var server;
 var options = minimist(process.argv);
@@ -19,6 +20,13 @@ var environment = options.environment || 'development';
 gulp.task('html', function() {
   return gulp.src('src/html/**/*.html')
     .pipe(gulp.dest('dist'))
+    .pipe(reload());
+});
+
+gulp.task('images', function() {
+  return gulp.src('src/images/**/*.png')
+    .pipe(imagemin())
+    .pipe(gulp.dest('dist/images'))
     .pipe(reload());
 });
 
@@ -49,12 +57,13 @@ gulp.task('server', function() {
   browserSync({ proxy: 'localhost:8000' });
 });
 
-gulp.task('build', ['html', 'styles', 'scripts']);
+gulp.task('build', ['html', 'styles', 'images', 'scripts']);
 
 gulp.task('watch', function() {
   gulp.watch('src/html/**/*.html', ['html']);
   gulp.watch('src/styles/**/*.scss', ['styles']);
   gulp.watch('src/scripts/**/*.js', ['scripts']);
+  gulp.watch('src/images/**/*.png', ['images']);
 });
 
 gulp.task('default', ['build', 'watch', 'server']);
