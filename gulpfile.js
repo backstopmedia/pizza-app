@@ -12,6 +12,7 @@ var minifyCss = require('gulp-minify-css');
 var buffer = require('gulp-buffer');
 var uglify = require('gulp-uglify');
 var imagemin = require('gulp-imagemin');
+var sourcemaps = require('gulp-sourcemaps');
 
 var server;
 var options = minimist(process.argv);
@@ -32,9 +33,9 @@ gulp.task('images', function() {
 
 gulp.task('styles', function() {
   return gulp.src('src/styles/**/*.scss')
-    .pipe(sass({
-      sourceComments: environment === 'development' ? 'map' : false
-    })).on('error', handleError)
+    .pipe(environment === 'development' ? sourcemaps.init() : gutil.noop())
+      .pipe(sass()).on('error', handleError)
+    .pipe(environment === 'development' ? sourcemaps.write() : gutil.noop())
     .pipe(environment === 'production' ? minifyCss() : gutil.noop())
     .pipe(gulp.dest('dist/styles'))
     .pipe(reload());
