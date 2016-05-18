@@ -1,37 +1,37 @@
 'use strict';
 
-var gulp = require('gulp');
-var sass = require('gulp-sass');
-var browserify = require('browserify');
-var source = require('vinyl-source-stream');
-var express = require('express');
-var browserSync = require('browser-sync');
-var gutil = require('gulp-util');
-var minimist = require('minimist');
-var minifyCss = require('gulp-minify-css');
-var buffer = require('gulp-buffer');
-var uglify = require('gulp-uglify');
-var imagemin = require('gulp-imagemin');
-var sourcemaps = require('gulp-sourcemaps');
+import * as gulp from 'gulp';
+import * as sass from 'gulp-sass';
+import * as browserify from 'browserify';
+import * as source from 'vinyl-source-stream';
+import * as express from 'express';
+import * as browserSync from 'browser-sync';
+import * as gutil from 'gulp-util';
+import * as minimist from 'minimist';
+import * as minifyCss from 'gulp-minify-css';
+const buffer = require('gulp-buffer');
+const uglify = require('gulp-uglify');
+const imagemin = require('gulp-imagemin');
+import * as sourcemaps from 'gulp-sourcemaps';
 
-var server;
-var options = minimist(process.argv);
-var environment = options.environment || 'development';
+let server: express.Express;
+const options: { environment?: string; } = minimist(process.argv);
+const environment = options.environment || 'development';
 
-gulp.task('html', function() {
+gulp.task('html', () => {
   return gulp.src('src/html/**/*.html')
     .pipe(gulp.dest('dist'))
     .pipe(reload());
 });
 
-gulp.task('images', function() {
+gulp.task('images', () => {
   return gulp.src('src/images/**/*.png')
     .pipe(imagemin())
     .pipe(gulp.dest('dist/images'))
     .pipe(reload());
 });
 
-gulp.task('styles', function() {
+gulp.task('styles', () => {
   return gulp.src('src/styles/**/*.scss')
     .pipe(environment === 'development' ? sourcemaps.init() : gutil.noop())
       .pipe(sass()).on('error', handleError)
@@ -41,7 +41,7 @@ gulp.task('styles', function() {
     .pipe(reload());
 });
 
-gulp.task('scripts', function() {
+gulp.task('scripts', () => {
   return browserify('./src/scripts/main.js', { debug: environment === 'development' })
     .bundle().on('error', handleError)
     .pipe(source('bundle.js'))
@@ -51,7 +51,7 @@ gulp.task('scripts', function() {
     .pipe(reload());
 });
 
-gulp.task('server', function() {
+gulp.task('server', () => {
   server = express();
   server.use(express.static('dist'));
   server.listen(8000);
@@ -60,7 +60,7 @@ gulp.task('server', function() {
 
 gulp.task('build', ['html', 'styles', 'images', 'scripts']);
 
-gulp.task('watch', function() {
+gulp.task('watch', () => {
   gulp.watch('src/html/**/*.html', ['html']);
   gulp.watch('src/styles/**/*.scss', ['styles']);
   gulp.watch('src/scripts/**/*.js', ['scripts']);
@@ -69,7 +69,7 @@ gulp.task('watch', function() {
 
 gulp.task('default', ['build', 'watch', 'server']);
 
-function handleError(err) {
+function handleError(err: Error) {
   console.log(err.toString());
   this.emit('end');
 }
