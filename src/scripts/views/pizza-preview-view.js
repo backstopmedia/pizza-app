@@ -7,8 +7,14 @@ var PizzaPreviewView = function(model, $el) {
   this.model = model;
   this.$el = $el;
   this.render();
-
-  Object.observe(model, this.render.bind(this));
+  
+  Object.keys(model).forEach(function(key) {
+    this[key] = model[key];
+    Object.defineProperty(model, key, {
+      get: function() { return this[key]; }.bind(this),
+      set: function(value) { this[key] = value; this.render(); }.bind(this)
+    });
+  }.bind(this));
 };
 
 PizzaPreviewView.prototype = {
