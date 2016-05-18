@@ -58,16 +58,22 @@ gulp.task('server', function() {
   browserSync({ proxy: 'localhost:8000' });
 });
 
-gulp.task('build', ['html', 'styles', 'images', 'scripts']);
+gulp.task(
+  'build',
+  gulp.parallel('html', 'styles', 'images', 'scripts')
+);
 
 gulp.task('watch', function() {
-  gulp.watch('src/html/**/*.html', ['html']);
-  gulp.watch('src/styles/**/*.scss', ['styles']);
-  gulp.watch('src/scripts/**/*.js', ['scripts']);
-  gulp.watch('src/images/**/*.png', ['images']);
+  gulp.watch('src/html/**/*.html', gulp.series('html'));
+  gulp.watch('src/styles/**/*.scss', gulp.series('styles'));
+  gulp.watch('src/scripts/**/*.js', gulp.series('scripts'));
+  gulp.watch('src/images/**/*.png', gulp.series('images'));
 });
 
-gulp.task('default', ['build', 'watch', 'server']);
+gulp.task(
+  'default',
+  gulp.series('build', gulp.parallel('watch', 'server'))
+);
 
 function handleError(err) {
   console.log(err.toString());
