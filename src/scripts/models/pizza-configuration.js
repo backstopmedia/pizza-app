@@ -36,7 +36,7 @@ PizzaConfiguration.prototype = {
   validate: function() {
     var errors = {};
 
-    if (!this.size || !this.availableSizes[this.cheese]) {
+    if (!this.size || !this.availableSizes[this.size]) {
       errors.size = 'You must select a pizza size';
     }
 
